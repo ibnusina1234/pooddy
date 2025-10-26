@@ -1,0 +1,16 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  color-scheme: light;
+}
+
+/* Cute scrollbars for Gen Z vibes */
+* {
+  scrollbar-width: thin;
+  scrollbar-color: #ffc6de #fff0f6;
+}
+*::-webkit-scrollbar { height: 8px; width: 8px; }
+*::-webkit-scrollbar-track { background: #fff0f6; }
+*::-webkit-scrollbar-thumb { background-color: #ffc6de; border-radius: 6px; }
