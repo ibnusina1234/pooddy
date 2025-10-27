@@ -1,7 +1,7 @@
 export const products = [
   {
     id: 1,
-    name: "Classic Caramel Milky 120 ml",
+    name: "Classic Caramel Milky With Regal 120 ml",
     price: "9K",
     image: "./caramel-pudding.jpg",
     desc: "Smooth & creamy pudding klasik yang bikin nagih!",
