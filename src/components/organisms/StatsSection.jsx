@@ -2,8 +2,8 @@ import StatCard from '../molecules/StatCard';
 
 export default function StatsSection() {
   const stats = [
-    { value: "1000+", label: "Happy Customers" },
-    { value: "6", label: "Varian Rasa" },
+    { value: "💖", label: "Crafted with Passion" },
+    { value: "Since 2025", label: "Freshly Launched" },
     { value: "100%", label: "Homemade Fresh" }
   ];
 
