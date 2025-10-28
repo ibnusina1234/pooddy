@@ -24,6 +24,8 @@ export default function CartSidebar() {
                   const itemPrice = parseInt(item.price.replace('K', '')) * 1000;
                   const subtotal = itemPrice * item.quantity;
                   message += `${index + 1}. ${item.name}\n`;
+                  if (item.size) message += `   Ukuran: ${item.size}\n`;
+                  if (item.buyerName) message += `   Nama Pemesan: ${item.buyerName}\n`;
                   message += `   Qty: ${item.quantity}x\n`;
                   message += `   Harga: ${formatPrice(item.price)}\n`;
                   message += `   Subtotal: Rp ${subtotal.toLocaleString('id-ID')}\n\n`;
@@ -102,7 +104,7 @@ export default function CartSidebar() {
                                                 <div className="space-y-4">
                                                       {cartItems.map((item) => (
                                                             <motion.div
-                                                                  key={item.id}
+                                                                  key={item.cartId}
                                                                   initial={{ opacity: 0, y: 20 }}
                                                                   animate={{ opacity: 1, y: 0 }}
                                                                   exit={{ opacity: 0, x: -100 }}
@@ -110,7 +112,7 @@ export default function CartSidebar() {
                                                             >
                                                                   {/* Remove Button */}
                                                                   <button
-                                                                        onClick={() => removeFromCart(item.id)}
+                                                                        onClick={() => removeFromCart(item.cartId)}
                                                                         className="absolute top-2 right-2 text-red-500 hover:bg-red-100 rounded-full p-1.5 transition-colors"
                                                                   >
                                                                         <span className="text-lg">🗑️</span>
@@ -132,11 +134,17 @@ export default function CartSidebar() {
                                                                               <p className="text-pink-600 font-bold mb-2">
                                                                                     {formatPrice(item.price)}
                                                                               </p>
+                                                                                    {item.size && (
+                                                                                          <p className="text-sm text-gray-600">Ukuran: {item.size}</p>
+                                                                                    )}
+                                                                                    {item.buyerName && (
+                                                                                          <p className="text-sm text-gray-600">Nama: {item.buyerName}</p>
+                                                                                    )}
 
                                                                               {/* Quantity Control */}
                                                                               <div className="flex items-center gap-3">
                                                                                     <button
-                                                                                          onClick={() => updateQuantity(item.id, item.quantity - 1)}
+                                                                                          onClick={() => updateQuantity(item.cartId, item.quantity - 1)}
                                                                                           className="bg-white hover:bg-gray-100 text-gray-800 font-bold w-8 h-8 rounded-lg transition-colors"
                                                                                     >
                                                                                           −
@@ -145,7 +153,7 @@ export default function CartSidebar() {
                                                                                           {item.quantity}
                                                                                     </span>
                                                                                     <button
-                                                                                          onClick={() => updateQuantity(item.id, item.quantity + 1)}
+                                                                                          onClick={() => updateQuantity(item.cartId, item.quantity + 1)}
                                                                                           className="bg-pink-500 hover:bg-pink-600 text-white font-bold w-8 h-8 rounded-lg transition-colors"
                                                                                     >
                                                                                           +
@@ -187,7 +195,7 @@ export default function CartSidebar() {
                                                 </div>
 
                                                 {/* Buttons */}
-                                                <div className="space-y-2">
+                                                      <div className="space-y-2">
                                                       <Button
                                                             variant="primary"
                                                             onClick={handleCheckout}

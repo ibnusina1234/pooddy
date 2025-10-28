@@ -22,37 +22,33 @@ export function CartProvider({ children }) {
   // Add item to cart
   const addToCart = (product) => {
     setCartItems((prevItems) => {
-      const existingItem = prevItems.find(item => item.id === product.id);
-      
-      if (existingItem) {
-        // If item exists, increase quantity
-        return prevItems.map(item =>
-          item.id === product.id
-            ? { ...item, quantity: item.quantity + 1 }
-            : item
-        );
-      } else {
-        // Add new item with quantity 1
-        return [...prevItems, { ...product, quantity: 1 }];
-      }
+      // Create a unique cart item id to allow same product with different options
+      const cartId = product.cartId || `${product.id}-${product.size || ''}-${product.buyerName || ''}-${Date.now()}`;
+      const newItem = {
+        ...product,
+        cartId,
+        quantity: product.quantity ?? 1
+      };
+
+      return [...prevItems, newItem];
     });
   };
 
   // Remove item from cart
-  const removeFromCart = (productId) => {
-    setCartItems(prevItems => prevItems.filter(item => item.id !== productId));
+  const removeFromCart = (cartId) => {
+    setCartItems(prevItems => prevItems.filter(item => item.cartId !== cartId));
   };
 
   // Update quantity
-  const updateQuantity = (productId, newQuantity) => {
+  const updateQuantity = (cartId, newQuantity) => {
     if (newQuantity < 1) {
-      removeFromCart(productId);
+      removeFromCart(cartId);
       return;
     }
 
     setCartItems(prevItems =>
       prevItems.map(item =>
-        item.id === productId
+        item.cartId === cartId
           ? { ...item, quantity: newQuantity }
           : item
       )
