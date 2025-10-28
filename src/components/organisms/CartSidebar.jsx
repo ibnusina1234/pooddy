@@ -1,9 +1,11 @@
 import { motion, AnimatePresence } from 'framer-motion';
+import { useState } from 'react';
 import { useCart } from '../../context/CartContext';
 import Button from '../atoms/Button';
 import { config } from '../../data/config';
 
 export default function CartSidebar() {
+      const [orderName, setOrderName] = useState('');
       const {
             cartItems,
             isCartOpen,
@@ -20,12 +22,16 @@ export default function CartSidebar() {
       const generateWhatsAppMessage = () => {
             let message = " *PESANAN POODDY*\n\n";
 
+            // Include order-level buyer name if provided
+            if (orderName) {
+                  message += `Nama Pemesan: ${orderName}\n\n`;
+            }
+
             cartItems.forEach((item, index) => {
                   const itemPrice = parseInt(item.price.replace('K', '')) * 1000;
                   const subtotal = itemPrice * item.quantity;
                   message += `${index + 1}. ${item.name}\n`;
                   if (item.size) message += `   Ukuran: ${item.size}\n`;
-                  if (item.buyerName) message += `   Nama Pemesan: ${item.buyerName}\n`;
                   message += `   Qty: ${item.quantity}x\n`;
                   message += `   Harga: ${formatPrice(item.price)}\n`;
                   message += `   Subtotal: Rp ${subtotal.toLocaleString('id-ID')}\n\n`;
@@ -137,9 +143,6 @@ export default function CartSidebar() {
                                                                                     {item.size && (
                                                                                           <p className="text-sm text-gray-600">Ukuran: {item.size}</p>
                                                                                     )}
-                                                                                    {item.buyerName && (
-                                                                                          <p className="text-sm text-gray-600">Nama: {item.buyerName}</p>
-                                                                                    )}
 
                                                                               {/* Quantity Control */}
                                                                               <div className="flex items-center gap-3">
@@ -195,21 +198,25 @@ export default function CartSidebar() {
                                                 </div>
 
                                                 {/* Buttons */}
+                                                <div className="mb-3">
+                                                      <label className="block text-sm font-semibold mb-2">Nama Pemesan</label>
+                                                      <input type="text" value={orderName} onChange={(e) => setOrderName(e.target.value)} placeholder="Nama lengkap" className="w-full border px-3 py-2 rounded-lg mb-3" />
                                                       <div className="space-y-2">
-                                                      <Button
-                                                            variant="primary"
-                                                            onClick={handleCheckout}
-                                                            className="w-full"
-                                                      >
-                                                            <span>Checkout via WhatsApp</span>
-                                                            <span className="text-xl">💬</span>
-                                                      </Button>
-                                                      <button
-                                                            onClick={clearCart}
-                                                            className="w-full py-3 text-red-600 hover:bg-red-50 rounded-full font-bold transition-colors"
-                                                      >
-                                                            Kosongkan Keranjang
-                                                      </button>
+                                                            <Button
+                                                                  variant="primary"
+                                                                  onClick={handleCheckout}
+                                                                  className="w-full"
+                                                            >
+                                                                  <span>Checkout via WhatsApp</span>
+                                                                  <span className="text-xl">💬</span>
+                                                            </Button>
+                                                            <button
+                                                                  onClick={clearCart}
+                                                                  className="w-full py-3 text-red-600 hover:bg-red-50 rounded-full font-bold transition-colors"
+                                                            >
+                                                                  Kosongkan Keranjang
+                                                            </button>
+                                                      </div>
                                                 </div>
                                           </div>
                                     )}

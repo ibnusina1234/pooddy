@@ -9,7 +9,6 @@ export default function ProductCard({ product, index = 0 }) {
   const { addToCart } = useCart();
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedSize, setSelectedSize] = useState('120');
-  const [buyerName, setBuyerName] = useState('');
 
   const handleConfirmAdd = () => {
     const price = selectedSize === '120' ? '9K' : '18K';
@@ -18,12 +17,10 @@ export default function ProductCard({ product, index = 0 }) {
       ...product,
       price,
       size: sizeLabel,
-      buyerName: buyerName.trim(),
     };
 
     addToCart(cartItem);
     setIsModalOpen(false);
-    setBuyerName('');
     setSelectedSize('120');
   };
 
@@ -115,10 +112,7 @@ export default function ProductCard({ product, index = 0 }) {
               </div>
             </div>
 
-            <div className="mb-4">
-              <label className="block font-semibold mb-2">Nama Pemesan</label>
-              <input type="text" value={buyerName} onChange={(e) => setBuyerName(e.target.value)} placeholder="Nama lengkap" className="w-full border px-3 py-2 rounded-lg" />
-            </div>
+
 
             <div className="flex justify-end gap-3">
               <button onClick={() => setIsModalOpen(false)} className="px-4 py-2 rounded-lg border">Batal</button>

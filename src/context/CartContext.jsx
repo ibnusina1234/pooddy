@@ -22,12 +22,26 @@ export function CartProvider({ children }) {
   // Add item to cart
   const addToCart = (product) => {
     setCartItems((prevItems) => {
-      // Create a unique cart item id to allow same product with different options
-      const cartId = product.cartId || `${product.id}-${product.size || ''}-${product.buyerName || ''}-${Date.now()}`;
+      // If same product id and size exists, increase quantity
+      const existingIndex = prevItems.findIndex(
+        (item) => item.id === product.id && item.size === product.size
+      );
+
+      if (existingIndex !== -1) {
+        const updated = [...prevItems];
+        updated[existingIndex] = {
+          ...updated[existingIndex],
+          quantity: (updated[existingIndex].quantity || 1) + (product.quantity || 1),
+          price: product.price || updated[existingIndex].price,
+        };
+        return updated;
+      }
+
+      const cartId = `${product.id}-${product.size || ''}-${Date.now()}`;
       const newItem = {
         ...product,
         cartId,
-        quantity: product.quantity ?? 1
+        quantity: product.quantity ?? 1,
       };
 
       return [...prevItems, newItem];
