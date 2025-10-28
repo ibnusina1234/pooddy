@@ -6,6 +6,7 @@ import { config } from '../../data/config';
 
 export default function CartSidebar() {
       const [orderName, setOrderName] = useState('');
+      const [error, setError] = useState('');
       const {
             cartItems,
             isCartOpen,
@@ -49,13 +50,21 @@ export default function CartSidebar() {
       };
 
       const handleCheckout = () => {
+            // Validate order name is provided
+            if (!orderName || orderName.trim() === '') {
+                  setError('Nama pemesan wajib diisi');
+                  return;
+            }
+            setError('');
             const message = generateWhatsAppMessage();
             const url = `https://wa.me/${config.whatsappNumber}?text=${message}`;
             console.debug('Opening WhatsApp URL:', url);
             window.open(url, '_blank', 'noopener,noreferrer');
             clearCart();
             setIsCartOpen(false);
-      }; return (
+      };
+
+      return (
             <>
                   {/* Backdrop */}
                   <AnimatePresence>
@@ -200,12 +209,20 @@ export default function CartSidebar() {
                                                 {/* Buttons */}
                                                 <div className="mb-3">
                                                       <label className="block text-sm font-semibold mb-2">Nama Pemesan</label>
-                                                      <input type="text" value={orderName} onChange={(e) => setOrderName(e.target.value)} placeholder="Nama lengkap" className="w-full border px-3 py-2 rounded-lg mb-3" />
+                                                      <input
+                                                            type="text"
+                                                            value={orderName}
+                                                            onChange={(e) => { setOrderName(e.target.value); if (error) setError(''); }}
+                                                            placeholder="Nama lengkap"
+                                                            className="w-full border px-3 py-2 rounded-lg mb-1"
+                                                      />
+                                                      {error && <p className="text-sm text-red-600 mb-2">{error}</p>}
                                                       <div className="space-y-2">
                                                             <Button
                                                                   variant="primary"
                                                                   onClick={handleCheckout}
-                                                                  className="w-full"
+                                                                  className={`w-full ${!orderName || orderName.trim() === '' ? 'opacity-50 cursor-not-allowed' : ''}`}
+                                                                  disabled={!orderName || orderName.trim() === ''}
                                                             >
                                                                   <span>Checkout via WhatsApp</span>
                                                                   <span className="text-xl">💬</span>
