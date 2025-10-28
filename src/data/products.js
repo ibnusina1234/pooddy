@@ -3,7 +3,7 @@ export const products = [
     id: 1,
     name: "Classic Caramel Milky With Regal 120 ml",
     price: "9K",
-    image: "./caramel-pudding.jpg",
+    image: "./caramel-pudding.png",
     desc: "Smooth & creamy pudding klasik yang bikin nagih!",
     tags: ["Bestseller", "Must Try"]
   },
